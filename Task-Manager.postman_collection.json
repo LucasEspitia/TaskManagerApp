@@ -1,0 +1,343 @@
+{
+  "info": {
+    "name": "Task Manager API",
+    "description": "Collection for testing Task Manager backend API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"Test User\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Register a new user. This endpoint is fully implemented."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO: This will fail until candidates implement the login endpoint",
+                  "// After implementation, uncomment below to auto-save the token:",
+                  "// var jsonData = pm.response.json();",
+                  "// pm.environment.set(\"jwt_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login with user credentials. ⚠️ NOT IMPLEMENTED - This is a task for candidates to complete."
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Get All Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "description": "TODO: This will be needed after auth guard is implemented",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/tasks",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks"
+              ]
+            },
+            "description": "Get all tasks. ⚠️ Currently returns ALL tasks from ALL users - needs authorization fix."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Task by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "description": "TODO: This will be needed after auth guard is implemented",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/tasks/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace-with-task-id"
+                }
+              ]
+            },
+            "description": "Get a specific task by ID. ⚠️ Currently allows access to any task - needs authorization check."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "description": "TODO: This will be needed after auth guard is implemented",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Complete take-home assignment\",\n  \"description\": \"Implement all missing features\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"HIGH\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks"
+              ]
+            },
+            "description": "Create a new task. ⚠️ Currently uses hardcoded userId - needs to extract from JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Task",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "description": "TODO: This will be needed after auth guard is implemented",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DONE\",\n  \"priority\": \"MEDIUM\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace-with-task-id"
+                }
+              ]
+            },
+            "description": "Update a task. ⚠️ Currently allows updating any task - needs authorization check."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "description": "TODO: This will be needed after auth guard is implemented",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/tasks/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "replace-with-task-id"
+                }
+              ]
+            },
+            "description": "Delete a task. ⚠️ Currently allows deleting any task - needs authorization check."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Tasks by Priority (TODO)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/tasks?priority=HIGH",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "priority",
+                  "value": "HIGH",
+                  "description": "Filter by priority: LOW, MEDIUM, HIGH, URGENT"
+                }
+              ]
+            },
+            "description": "⚠️ NOT IMPLEMENTED - Example of how priority filtering could work. Candidates should implement this feature."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Update Priority (TODO)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taskIds\": [\"task-id-1\", \"task-id-2\"],\n  \"priority\": \"URGENT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/tasks/bulk-priority",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tasks",
+                "bulk-priority"
+              ]
+            },
+            "description": "⚠️ NOT IMPLEMENTED - Example of how bulk priority update could work. Candidates should implement this feature."
+          },
+          "response": []
+        }
+      ],
+      "description": "Task management endpoints"
+    }
+  ],
+  "variable": [
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
+

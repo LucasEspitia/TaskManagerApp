@@ -1,0 +1,48 @@
+<div class="task-list-container">
+  <div class="header">
+    <h2>My Tasks</h2>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+
+  <!-- TODO for candidates: Add priority filter component -->
+  <!-- TODO for candidates: Add button to create new task -->
+
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <table class="task-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks">
+        <td>{{ task.title }}</td>
+        <td>{{ task.description || '-' }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="'status-' + task.status.toLowerCase()">
+            {{ task.status }}
+          </span>
+        </td>
+        <td>
+          <span class="priority-badge" [ngClass]="'priority-' + task.priority.toLowerCase()">
+            {{ task.priority }}
+          </span>
+        </td>
+        <td class="actions">
+          <button class="edit-btn" (click)="editTask(task._id!)">Edit</button>
+          <button class="delete-btn" (click)="deleteTask(task._id!)">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="tasks.length === 0">
+        <td colspan="5" class="no-tasks">No tasks found. Create your first task!</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
