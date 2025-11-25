@@ -1,11 +1,18 @@
-// TODO: Add validation decorators from class-validator
-// This is intentionally left incomplete for candidates to implement
-
+import { IsString, IsOptional, IsEnum } from 'class-validator';
 import { TaskStatus, TaskPriority } from '../task.schema';
 
 export class UpdateTaskDto {
+  @IsString()
   title?: string;
+  @IsOptional()
+  @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsEnum(TaskStatus)
   status?: TaskStatus;
+
+  @IsOptional()
+  @IsEnum(TaskPriority)
   priority?: TaskPriority;
 }

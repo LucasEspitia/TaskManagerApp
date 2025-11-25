@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Req,
+  Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -29,9 +30,12 @@ export class TasksController {
   }
 
   @Get()
-  findAll(@Req() req: Request & { user: { userId: string } }) {
+  findAll(
+    @Req() req: Request & { user: { userId: string } },
+    @Query('priority') priority?: string,
+  ) {
     const userId = req.user.userId;
-    return this.tasksService.findAll(userId);
+    return this.tasksService.findAll(userId, priority);
   }
 
   @Get(':id')
@@ -53,6 +57,19 @@ export class TasksController {
     return this.tasksService.update(id, dto, userId);
   }
 
+  @Patch('bulk-priority')
+  bulkUpdatePriority(
+    @Body() body: { taskIds: string[]; priority: string },
+    @Req() req: Request & { user: { userId: string } },
+  ) {
+    const userId = req.user.userId;
+    return this.tasksService.bulkUpdatePriority(
+      body.taskIds,
+      body.priority,
+      userId,
+    );
+  }
+
   @Delete(':id')
   remove(
     @Param('id') id: string,
@@ -61,8 +78,4 @@ export class TasksController {
     const userId = req.user.userId;
     return this.tasksService.remove(id, userId);
   }
-
-  // TODO for candidates: Add priority management endpoints
-  // Example: GET /tasks?priority=HIGH
-  // Example: PATCH /tasks/bulk-priority
 }

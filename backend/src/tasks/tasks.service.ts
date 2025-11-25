@@ -1,14 +1,9 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Task, TaskDocument } from './task.schema';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { use } from 'passport';
 
 @Injectable()
 export class TasksService {
@@ -22,8 +17,14 @@ export class TasksService {
     return createdTask.save();
   }
 
-  async findAll(userId: string): Promise<Task[]> {
-    return this.taskModel.find({ userId }).exec();
+  async findAll(userId: string, priority?: string): Promise<Task[]> {
+    const filter: { userId: string; priority?: string } = { userId };
+
+    if (priority) {
+      filter.priority = priority;
+    }
+
+    return this.taskModel.find(filter).exec();
   }
 
   async findOne(id: string, userId: string): Promise<Task | null> {
@@ -66,7 +67,16 @@ export class TasksService {
     return task;
   }
 
-  // TODO for candidates: Implement priority management methods
-  // - Filter tasks by priority
-  // - Bulk update priorities
+  async bulkUpdatePriority(
+    taskIds: string[],
+    priority: string,
+    userId: string,
+  ): Promise<{ updatedCount: number }> {
+    const result = await this.taskModel.updateMany(
+      { _id: { $in: taskIds }, userId },
+      { priority },
+    );
+
+    return { updatedCount: result.modifiedCount };
+  }
 }
