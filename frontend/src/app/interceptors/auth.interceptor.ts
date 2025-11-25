@@ -1,23 +1,31 @@
-import { HttpInterceptorFn } from '@angular/core';
-
-// TODO for candidates: Implement HTTP interceptor to add JWT token to requests
-// This interceptor should:
-// 1. Get the token from AuthService
-// 2. Add it to the Authorization header for all outgoing requests
-// 3. Handle errors (e.g., redirect to login on 401)
+import { inject } from '@angular/core';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  // FIXME: This is incomplete - needs to add Authorization header with JWT token
-  // Example (uncomment and complete):
-  // const authService = inject(AuthService);
-  // const token = authService.getToken();
-  // if (token) {
-  //   req = req.clone({
-  //     setHeaders: {
-  //       Authorization: `Bearer ${token}`
-  //     }
-  //   });
-  // }
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  return next(req);
+  const token = authService.getToken();
+
+  // attach token
+  if (token) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  return next(req).pipe(
+    catchError((err) => {
+      if (err.status === 401) {
+        authService.logout();
+        router.navigate(['/login']);
+      }
+      return throwError(() => err);
+    }),
+  );
 };
