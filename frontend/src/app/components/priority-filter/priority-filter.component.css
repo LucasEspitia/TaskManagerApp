@@ -1,0 +1,111 @@
+/* Container */
+.priority-filter {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+/* Label */
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+/* Dropdown */
+.dropdown {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.dropdown:hover {
+  background: #f7f7f7;
+}
+
+/* Dropdown menu */
+.menu {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 160px;
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  z-index: 20;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.menu li {
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.menu li:hover {
+  background-color: #f2f2f2;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Selected text */
+.selected {
+  margin-right: 8px;
+}
+
+/* Dot colors */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+/* Priority colors*/
+.dot.all {
+  background-color: #999;
+}
+
+.dot.low {
+  background-color: #4caf50;
+}
+
+.dot.medium {
+  background-color: #ffb300;
+}
+
+.dot.high {
+  background-color: #ff7043;
+}
+
+.dot.urgent {
+  background-color: #e53935;
+}
+
+/* Arrow */
+.arrow {
+  font-size: 10px;
+  opacity: 0.6;
+}

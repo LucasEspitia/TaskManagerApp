@@ -34,8 +34,14 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+  getTasks(priority?: string): Observable<Task[]> {
+    const params: Record<string, string> = {};
+
+    if (priority) {
+      params['priority'] = priority;
+    }
+
+    return this.http.get<Task[]>(this.apiUrl, { params });
   }
 
   getTask(id: string): Observable<Task> {
@@ -54,9 +60,13 @@ export class TaskService {
     return this.http.delete<Task>(`${this.apiUrl}/${id}`);
   }
 
-  // TODO for candidates: Implement priority filtering
-  // Add method to filter tasks by priority
-
-  // TODO for candidates: Implement bulk priority update
-  // Add method to update multiple tasks' priorities at once
+  bulkUpdatePriority(
+    taskIds: string[],
+    priority: TaskPriority,
+  ): Observable<{ updatedCount: number }> {
+    return this.http.patch<{ updatedCount: number }>(`${this.apiUrl}/bulk-priority`, {
+      taskIds,
+      priority,
+    });
+  }
 }

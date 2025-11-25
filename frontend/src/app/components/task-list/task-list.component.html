@@ -4,7 +4,8 @@
     <button class="logout-btn" (click)="logout()">Logout</button>
   </div>
 
-  <!-- TODO for candidates: Add priority filter component -->
+  <app-priority-filter (prioritySelected)="applyFilter($event)"> </app-priority-filter>
+
   <!-- TODO for candidates: Add button to create new task -->
 
   <div class="error-message" *ngIf="errorMessage">

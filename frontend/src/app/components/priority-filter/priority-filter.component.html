@@ -1,0 +1,17 @@
+<div class="priority-filter" (click)="$event.stopPropagation()">
+  <span class="label">Priority:</span>
+
+  <div class="dropdown" (click)="toggleMenu()">
+    <span class="dot" [ngClass]="selectedLabel.toLowerCase()"></span>
+    <span class="selected">{{ selectedLabel }}</span>
+    <span class="arrow">&#9662;</span>
+  </div>
+
+  <ul class="menu" *ngIf="menuOpen">
+    <li (click)="select('')"><span class="dot all"></span> All</li>
+    <li (click)="select('LOW')"><span class="dot low"></span> Low</li>
+    <li (click)="select('MEDIUM')"><span class="dot medium"></span> Medium</li>
+    <li (click)="select('HIGH')"><span class="dot high"></span> High</li>
+    <li (click)="select('URGENT')"><span class="dot urgent"></span> Urgent</li>
+  </ul>
+</div>

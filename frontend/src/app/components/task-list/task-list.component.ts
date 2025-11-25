@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TaskService, Task, TaskStatus, TaskPriority } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
+import { PriorityFilterComponent } from '../priority-filter/priority-filter.component';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PriorityFilterComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css',
 })
@@ -28,15 +29,10 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-  loadTasks() {
-    this.taskService.getTasks().subscribe({
-      next: (tasks) => {
-        this.tasks = tasks;
-      },
-      error: (error) => {
-        this.errorMessage = 'Failed to load tasks';
-        console.error('Error loading tasks:', error);
-      },
+  loadTasks(priority?: string) {
+    this.taskService.getTasks(priority).subscribe({
+      next: (tasks) => (this.tasks = tasks),
+      error: () => (this.errorMessage = 'Error loading tasks'),
     });
   }
 
@@ -70,7 +66,7 @@ export class TaskListComponent implements OnInit {
       alert('Logout not fully implemented yet');
     }
   }
-
-  // TODO for candidates: Implement priority filtering
-  // Add filter controls and method to filter tasks by priority
+  applyFilter(priority: string) {
+    this.loadTasks(priority);
+  }
 }
