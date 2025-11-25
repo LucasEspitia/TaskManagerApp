@@ -157,3 +157,45 @@ h2 {
 .create-btn:hover {
   background-color: #218838;
 }
+/* bulk selectors */
+.task-table input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* bulk action buttons */
+.bulk-actions {
+  margin: 12px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-bulk,
+.btn-delete {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-bulk {
+  background: #4b8cff;
+  color: white;
+}
+.btn-bulk:hover {
+  background: #0056b3;
+}
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
+.btn-delete:hover {
+  background-color: #c82333;
+}
+
+/* Bulk Edit Component Styles */
+.selected-row {
+  background: linear-gradient(to right, #eef4ff, #f6f9ff);
+  box-shadow: inset 0 0 0 2px #c7d7ff;
+}

@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { Task, TaskDocument } from './task.schema';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { BulkEditDto } from './dto/bulk-edit.dto';
 
 @Injectable()
 export class TasksService {
@@ -82,21 +83,21 @@ export class TasksService {
     return task;
   }
 
-  async bulkUpdatePriority(
-    taskIds: string[],
-    priority: string,
-    userId: string,
-  ): Promise<{ updatedCount: number }> {
+  async bulkEdit(taskIds: string[], fields: BulkEditDto, userId: string) {
+    const update: Partial<BulkEditDto> = {};
+
+    if (fields.priority) update.priority = fields.priority;
+    if (fields.status) update.status = fields.status;
+
     const objectIds = taskIds.map((id) => new Types.ObjectId(id));
+    const userObjectId = new Types.ObjectId(userId);
 
     const result = await this.taskModel.updateMany(
       {
         _id: { $in: objectIds },
-        userId: new Types.ObjectId(userId),
+        userId: userObjectId,
       },
-      {
-        priority,
-      },
+      update,
     );
 
     return { updatedCount: result.modifiedCount };

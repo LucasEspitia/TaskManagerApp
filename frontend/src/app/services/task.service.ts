@@ -60,13 +60,10 @@ export class TaskService {
     return this.http.delete<Task>(`${this.apiUrl}/${id}`);
   }
 
-  bulkUpdatePriority(
-    taskIds: string[],
-    priority: TaskPriority,
-  ): Observable<{ updatedCount: number }> {
-    return this.http.patch<{ updatedCount: number }>(`${this.apiUrl}/bulk-priority`, {
+  bulkEdit(taskIds: string[], fields: any) {
+    return this.http.patch(`${this.apiUrl}/bulk-edit`, {
       taskIds,
-      priority,
+      ...fields,
     });
   }
 }

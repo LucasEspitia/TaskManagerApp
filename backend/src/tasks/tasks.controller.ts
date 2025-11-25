@@ -12,6 +12,7 @@ import {
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { BulkEditDto } from './dto/bulk-edit.dto';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -45,6 +46,15 @@ export class TasksController {
     return this.tasksService.findAll(userId, priority);
   }
 
+  @Patch('bulk-edit')
+  bulkEdit(
+    @Body() body: BulkEditDto,
+    @Req() req: Request & { user: { userId: string } },
+  ) {
+    const userId = req.user.userId;
+    return this.tasksService.bulkEdit(body.taskIds, body, userId);
+  }
+
   @Get(':id')
   findOne(
     @Param('id') id: string,
@@ -62,19 +72,6 @@ export class TasksController {
   ) {
     const userId = req.user.userId;
     return this.tasksService.update(id, dto, userId);
-  }
-
-  @Patch('bulk-priority')
-  bulkUpdatePriority(
-    @Body() body: { taskIds: string[]; priority: string },
-    @Req() req: Request & { user: { userId: string } },
-  ) {
-    const userId = req.user.userId;
-    return this.tasksService.bulkUpdatePriority(
-      body.taskIds,
-      body.priority,
-      userId,
-    );
   }
 
   @Delete(':id')

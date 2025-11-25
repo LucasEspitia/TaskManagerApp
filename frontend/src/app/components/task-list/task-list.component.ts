@@ -5,10 +5,11 @@ import { TaskService, Task, TaskStatus, TaskPriority } from '../../services/task
 import { AuthService } from '../../services/auth.service';
 import { PriorityFilterComponent } from '../priority-filter/priority-filter.component';
 import { CreateTaskComponent } from '../task-create.component.ts/task-create.component';
+import { BulkEditComponent } from '../bulk-priority.component/bulk-edit.component';
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, PriorityFilterComponent, CreateTaskComponent],
+  imports: [CommonModule, PriorityFilterComponent, CreateTaskComponent, BulkEditComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css',
 })
@@ -76,6 +77,70 @@ export class TaskListComponent implements OnInit {
     this.taskService.createTask(task).subscribe(() => {
       this.creating = false;
       this.loadTasks();
+    });
+  }
+
+  // Implement bulk functionality
+  bulkEditOpen = false;
+  selectedTasks = new Set<string>();
+
+  toggleSelectAll(event: any) {
+    if (event.target.checked) {
+      this.tasks.forEach((t) => this.selectedTasks.add(t._id!));
+    } else {
+      this.selectedTasks.clear();
+    }
+  }
+
+  toggleSelection(id: string, event: any) {
+    if (event.target.checked) {
+      this.selectedTasks.add(id);
+    } else {
+      this.selectedTasks.delete(id);
+    }
+  }
+  openBulkEdit() {
+    this.bulkEditOpen = true;
+  }
+  applyBulkEdit(values: { priority?: TaskPriority; status?: TaskStatus }) {
+    const taskIds = Array.from(this.selectedTasks);
+
+    this.taskService.bulkEdit(taskIds, values).subscribe({
+      next: () => {
+        this.bulkEditOpen = false;
+        this.selectedTasks.clear();
+        this.loadTasks();
+      },
+      error: (err) => {
+        console.error('🔥 FRONT — Bulk edit ERROR:', err);
+        this.errorMessage = 'Error applying bulk update';
+      },
+    });
+  }
+
+  // Implement bulk delete functionality
+  bulkDelete() {
+    const ids = Array.from(this.selectedTasks);
+
+    if (ids.length === 0) return;
+
+    if (!confirm('Are you sure you want to delete the selected tasks?')) {
+      return;
+    }
+
+    let completed = 0;
+
+    ids.forEach((id) => {
+      this.taskService.deleteTask(id).subscribe({
+        next: () => {
+          completed++;
+          if (completed === ids.length) {
+            this.loadTasks();
+            this.selectedTasks.clear();
+          }
+        },
+        error: () => console.error('Error deleting: ', id),
+      });
     });
   }
 }

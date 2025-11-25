@@ -1,0 +1,24 @@
+<div class="modal-backdrop" *ngIf="open">
+  <div class="modal">
+    <h3>Bulk Edit</h3>
+
+    <div class="form-block">
+      <label>Priority</label>
+      <select [(ngModel)]="selectedPriority">
+        <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+      </select>
+    </div>
+
+    <div class="form-block">
+      <label>Status</label>
+      <select [(ngModel)]="selectedStatus">
+        <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+
+    <div class="buttons">
+      <button class="btn-save" (click)="applyChange()">Apply</button>
+      <button class="btn-cancel" (click)="close.emit()">Cancel</button>
+    </div>
+  </div>
+</div>
