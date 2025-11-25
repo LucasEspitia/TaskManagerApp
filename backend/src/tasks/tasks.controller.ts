@@ -25,6 +25,9 @@ export class TasksController {
     @Body() createTaskDto: CreateTaskDto,
     @Req() req: Request & { user: { userId: string } },
   ) {
+    //console.log('CREATE TASK PETITION RECEIVED');
+    //console.log('DTO:', createTaskDto);
+    //console.log('USER:', req.user);
     const userId = req.user.userId;
     return this.tasksService.create(createTaskDto, userId);
   }
@@ -34,6 +37,10 @@ export class TasksController {
     @Req() req: Request & { user: { userId: string } },
     @Query('priority') priority?: string,
   ) {
+    //console.log('Before calling findAll');
+    //console.log('FIND ALL TASKS PETITION RECEIVED');
+    //console.log('Priority filter:', priority);
+    // console.log('USER:', req.user);
     const userId = req.user.userId;
     return this.tasksService.findAll(userId, priority);
   }

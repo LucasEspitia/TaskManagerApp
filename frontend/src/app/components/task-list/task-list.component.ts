@@ -4,17 +4,18 @@ import { Router } from '@angular/router';
 import { TaskService, Task, TaskStatus, TaskPriority } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
 import { PriorityFilterComponent } from '../priority-filter/priority-filter.component';
-
+import { CreateTaskComponent } from '../task-create.component.ts/task-create.component';
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, PriorityFilterComponent],
+  imports: [CommonModule, PriorityFilterComponent, CreateTaskComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css',
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   errorMessage = '';
+  creating = false;
   // Expose enums to template
   TaskStatus = TaskStatus;
   TaskPriority = TaskPriority;
@@ -54,7 +55,7 @@ export class TaskListComponent implements OnInit {
   editTask(id: string) {
     this.router.navigate(['/tasks', id]);
   }
-
+  // Logout user
   logout() {
     try {
       this.authService.logout();
@@ -63,7 +64,18 @@ export class TaskListComponent implements OnInit {
       alert('Logout not fully implemented yet');
     }
   }
+  // Apply filter based on selected priority
   applyFilter(priority: string) {
     this.loadTasks(priority);
+  }
+  openCreateForm() {
+    this.creating = true;
+  }
+
+  handleCreate(task: any) {
+    this.taskService.createTask(task).subscribe(() => {
+      this.creating = false;
+      this.loadTasks();
+    });
   }
 }

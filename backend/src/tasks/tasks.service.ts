@@ -18,20 +18,29 @@ export class TasksService {
   }
 
   async findAll(userId: string, priority?: string): Promise<Task[]> {
-    const filter: { userId: string; priority?: string } = { userId };
+    const filter: { userId: Types.ObjectId; priority?: string } = {
+      userId: new Types.ObjectId(userId),
+    };
 
     if (priority) {
       filter.priority = priority;
     }
-
+    //console.log('Filter applied in findAll:', filter);
     return this.taskModel.find(filter).exec();
   }
 
   async findOne(id: string, userId: string): Promise<Task | null> {
-    const task = await this.taskModel.findOne({ _id: id, userId }).exec();
+    const task = await this.taskModel
+      .findOne({
+        _id: new Types.ObjectId(id),
+        userId: new Types.ObjectId(userId),
+      })
+      .exec();
+
     if (!task) {
       throw new NotFoundException('Task not found');
     }
+
     return task;
   }
 
@@ -42,7 +51,10 @@ export class TasksService {
   ): Promise<Task | null> {
     const task = await this.taskModel
       .findOneAndUpdate(
-        { _id: id, userId }, // authorization check
+        {
+          _id: new Types.ObjectId(id),
+          userId: new Types.ObjectId(userId),
+        },
         updateTaskDto,
         { new: true },
       )
@@ -57,7 +69,10 @@ export class TasksService {
 
   async remove(id: string, userId: string): Promise<Task | null> {
     const task = await this.taskModel
-      .findOneAndDelete({ _id: id, userId }) // authorization check
+      .findOneAndDelete({
+        _id: new Types.ObjectId(id),
+        userId: new Types.ObjectId(userId),
+      })
       .exec();
 
     if (!task) {
@@ -72,9 +87,16 @@ export class TasksService {
     priority: string,
     userId: string,
   ): Promise<{ updatedCount: number }> {
+    const objectIds = taskIds.map((id) => new Types.ObjectId(id));
+
     const result = await this.taskModel.updateMany(
-      { _id: { $in: taskIds }, userId },
-      { priority },
+      {
+        _id: { $in: objectIds },
+        userId: new Types.ObjectId(userId),
+      },
+      {
+        priority,
+      },
     );
 
     return { updatedCount: result.modifiedCount };

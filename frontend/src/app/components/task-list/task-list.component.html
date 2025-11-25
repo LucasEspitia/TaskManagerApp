@@ -6,7 +6,10 @@
 
   <app-priority-filter (prioritySelected)="applyFilter($event)"> </app-priority-filter>
 
-  <!-- TODO for candidates: Add button to create new task -->
+  <button class="create-btn" (click)="openCreateForm()">Add +</button>
+
+  <app-create-task *ngIf="creating" (create)="handleCreate($event)" (cancel)="creating = false">
+  </app-create-task>
 
   <div class="error-message" *ngIf="errorMessage">
     {{ errorMessage }}
