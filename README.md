@@ -29,12 +29,12 @@ This repository contains a working but **incomplete** application. The basic str
 
 ### Intentionally Missing (Your Tasks)
 
-❌ JWT authentication login endpoint  
+✅ JWT authentication login endpoint  
 ❌ Auth guards on backend routes  
 ❌ Authorization checks (users can currently see all tasks!)  
 ❌ Frontend route guards  
 ❌ HTTP interceptor to attach JWT tokens  
-❌ Complete AuthService implementation  
+✅ Complete AuthService implementation  
 ❌ Task detail/edit component  
 ❌ Priority management features  
 ✅ Input validation using DTOs  

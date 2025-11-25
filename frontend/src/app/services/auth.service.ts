@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 interface RegisterData {
   email: string;
@@ -14,10 +14,12 @@ interface LoginData {
 }
 
 interface AuthResponse {
-  token?: string;
-  id?: string;
-  email?: string;
-  name?: string;
+  access_token: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
 }
 
 @Injectable({
@@ -25,6 +27,7 @@ interface AuthResponse {
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';
+  private tokenKey = 'access_token'; // Key to store JWT token
 
   constructor(private http: HttpClient) {}
 
@@ -32,31 +35,28 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data);
   }
 
-  // TODO for candidates: Implement login method
   // Should call the backend login endpoint and store the JWT token
   login(data: LoginData): Observable<AuthResponse> {
-    // FIXME: This is incomplete - needs to call backend and handle token storage
-    throw new Error('Login method not implemented yet');
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
+      tap((response: AuthResponse) => {
+        // Store the JWT token upon successful login
+        localStorage.setItem(this.tokenKey, response.access_token);
+      }),
+    );
   }
 
-  // TODO for candidates: Implement logout method
   // Should clear the stored JWT token
   logout(): void {
-    // FIXME: Implement token removal from storage
-    throw new Error('Logout method not implemented yet');
+    localStorage.removeItem(this.tokenKey);
   }
 
-  // TODO for candidates: Implement token storage and retrieval
   // Store JWT token in localStorage or sessionStorage
   getToken(): string | null {
-    // FIXME: Implement token retrieval
-    return null;
+    return localStorage.getItem(this.tokenKey);
   }
 
-  // TODO for candidates: Implement authentication check
   // Return true if user is authenticated (has valid token)
   isAuthenticated(): boolean {
-    // FIXME: Implement authentication check
-    return false;
+    return !!this.getToken();
   }
 }
