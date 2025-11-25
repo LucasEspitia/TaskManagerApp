@@ -37,7 +37,7 @@ This repository contains a working but **incomplete** application. The basic str
 ❌ Complete AuthService implementation  
 ❌ Task detail/edit component  
 ❌ Priority management features  
-❌ Input validation using DTOs  
+✅ Input validation using DTOs  
 ❌ Error handling and user feedback
 
 ## Getting Started

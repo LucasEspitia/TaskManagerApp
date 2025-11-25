@@ -1,8 +1,15 @@
-// TODO: Add validation decorators from class-validator
-// This is intentionally left incomplete for candidates to implement
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
+
+  @IsString()
+  @MinLength(6)
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
   name: string;
 }
