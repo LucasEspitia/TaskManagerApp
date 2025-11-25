@@ -51,11 +51,8 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  // TODO for candidates: Implement navigation to task detail/edit component
   editTask(id: string) {
-    // FIXME: This component doesn't exist yet - candidates need to create it
-    // this.router.navigate(['/tasks', id]);
-    alert('Task edit component not implemented yet. TODO: Create task detail component');
+    this.router.navigate(['/tasks', id]);
   }
 
   logout() {

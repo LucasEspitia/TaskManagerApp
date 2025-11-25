@@ -1,0 +1,37 @@
+<div class="task-detail-container" *ngIf="!loading; else loadingTpl">
+  <h2>Edit Task</h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>Title</label>
+    <input formControlName="title" class="input" />
+    <div class="error" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+      Title is required
+    </div>
+
+    <label>Description</label>
+    <textarea formControlName="description" class="textarea"></textarea>
+
+    <label>Status</label>
+    <select formControlName="status" class="select">
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
+
+    <label>Priority</label>
+    <select formControlName="priority" class="select">
+      <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+    </select>
+
+    <div class="buttons">
+      <button type="submit" class="btn-save">Save</button>
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+    </div>
+
+    <div class="error-msg" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>
+
+<ng-template #loadingTpl>
+  <p>Loading task...</p>
+</ng-template>
