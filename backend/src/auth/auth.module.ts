@@ -4,20 +4,26 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     UsersModule,
-    ConfigModule,
-    // TODO for candidates: Configure JWT module with proper secret and expiration
-    // Currently this is incomplete and needs to be configured
+    PassportModule,
     JwtModule.register({
-      secret: 'CHANGE_ME_IN_PRODUCTION', // TODO: Move to environment variable
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '24h' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    JwtStrategy, // <-- REGISTRAR ESTRATEGIA JWT
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}
