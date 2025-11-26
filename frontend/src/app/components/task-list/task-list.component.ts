@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+
 import { TaskService, Task, TaskStatus, TaskPriority } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../shared/toast/toast.service';
+
 import { PriorityFilterComponent } from '../priority-filter/priority-filter.component';
 import { CreateTaskComponent } from '../task-create.component.ts/task-create.component';
 import { BulkEditComponent } from '../bulk-priority.component/bulk-edit.component';
+
 @Component({
   selector: 'app-task-list',
   standalone: true,
@@ -25,6 +29,7 @@ export class TaskListComponent implements OnInit {
     private taskService: TaskService,
     private authService: AuthService,
     private router: Router,
+    private toast: ToastService,
   ) {}
 
   ngOnInit() {
@@ -34,21 +39,18 @@ export class TaskListComponent implements OnInit {
   loadTasks(priority?: string) {
     this.taskService.getTasks(priority).subscribe({
       next: (tasks) => (this.tasks = tasks),
-      error: () => (this.errorMessage = 'Error loading tasks'),
+      error: () => this.toast.error('Failed to load tasks'),
     });
   }
 
-  // TODO for candidates: Implement delete functionality
   deleteTask(id: string) {
     if (confirm('Are you sure you want to delete this task?')) {
       this.taskService.deleteTask(id).subscribe({
         next: () => {
+          this.toast.success('Task deleted successfully');
           this.loadTasks();
         },
-        error: (error) => {
-          this.errorMessage = 'Failed to delete task';
-          console.error('Error deleting task:', error);
-        },
+        error: () => this.toast.error('Failed to delete task'),
       });
     }
   }
@@ -107,14 +109,12 @@ export class TaskListComponent implements OnInit {
 
     this.taskService.bulkEdit(taskIds, values).subscribe({
       next: () => {
+        this.toast.success('Edit applied');
         this.bulkEditOpen = false;
         this.selectedTasks.clear();
         this.loadTasks();
       },
-      error: (err) => {
-        console.error('🔥 FRONT — Bulk edit ERROR:', err);
-        this.errorMessage = 'Error applying bulk update';
-      },
+      error: () => this.toast.error('Bulk edit failed'),
     });
   }
 
@@ -124,9 +124,7 @@ export class TaskListComponent implements OnInit {
 
     if (ids.length === 0) return;
 
-    if (!confirm('Are you sure you want to delete the selected tasks?')) {
-      return;
-    }
+    if (!confirm('Delete selected tasks?')) return;
 
     let completed = 0;
 
@@ -135,11 +133,12 @@ export class TaskListComponent implements OnInit {
         next: () => {
           completed++;
           if (completed === ids.length) {
+            this.toast.success('Delete completed');
             this.loadTasks();
             this.selectedTasks.clear();
           }
         },
-        error: () => console.error('Error deleting: ', id),
+        error: () => this.toast.error(`Failed to delete task ${id}`),
       });
     });
   }

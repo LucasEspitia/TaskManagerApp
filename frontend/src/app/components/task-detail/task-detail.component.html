@@ -4,7 +4,7 @@
   <form [formGroup]="form" (ngSubmit)="save()">
     <label>Title</label>
     <input formControlName="title" class="input" />
-    <div class="error" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+    <div class="error-msg" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
       Title is required
     </div>
 
@@ -24,10 +24,6 @@
     <div class="buttons">
       <button type="submit" class="btn-save">Save</button>
       <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
-    </div>
-
-    <div class="error-msg" *ngIf="errorMessage">
-      {{ errorMessage }}
     </div>
   </form>
 </div>

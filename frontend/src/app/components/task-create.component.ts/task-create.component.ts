@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskPriority } from '../../services/task.service';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-create-task',
@@ -11,6 +12,8 @@ import { TaskPriority } from '../../services/task.service';
   styleUrl: './task-create.component.css',
 })
 export class CreateTaskComponent {
+  constructor(private toastService: ToastService) {}
+
   @Output() create = new EventEmitter<{
     title: string;
     description: string;
@@ -26,8 +29,25 @@ export class CreateTaskComponent {
     priority: TaskPriority.MEDIUM,
   };
 
+  submitted = false;
+
   submit() {
-    if (!this.newTask.title.trim()) return;
+    this.submitted = true;
+
+    if (!this.newTask.title.trim()) {
+      return;
+    }
+
     this.create.emit(this.newTask);
+
+    this.toastService.success('Task created successfully!');
+
+    //Reset
+    this.newTask = {
+      title: '',
+      description: '',
+      priority: TaskPriority.MEDIUM,
+    };
+    this.submitted = false;
   }
 }

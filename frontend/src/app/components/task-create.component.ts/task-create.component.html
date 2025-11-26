@@ -2,12 +2,24 @@
   <div class="modal">
     <h3>Create Task</h3>
 
+    <!-- TITLE -->
     <label>Title</label>
-    <input [(ngModel)]="newTask.title" />
+    <input
+      [(ngModel)]="newTask.title"
+      name="title"
+      required
+      #titleCtrl="ngModel"
+      [class.invalid]="submitted && titleCtrl.invalid"
+    />
 
+    <!-- Validation message -->
+    <div class="error-msg" *ngIf="submitted && titleCtrl.invalid">Title is required.</div>
+
+    <!-- DESCRIPTION -->
     <label>Description</label>
     <textarea [(ngModel)]="newTask.description"></textarea>
 
+    <!-- PRIORITY -->
     <label>Priority</label>
     <select [(ngModel)]="newTask.priority">
       <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>

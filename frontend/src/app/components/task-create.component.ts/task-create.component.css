@@ -92,7 +92,12 @@ select:focus {
 .cancel-btn:hover {
   background-color: #c82333;
 }
-
+/* Error Message */
+.error-msg {
+  color: red;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
 /* Animations */
 @keyframes fadeIn {
   from {
