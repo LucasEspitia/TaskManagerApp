@@ -58,19 +58,13 @@ export class TaskListComponent implements OnInit {
   editTask(id: string) {
     this.router.navigate(['/tasks', id]);
   }
-  // Logout user
-  logout() {
-    try {
-      this.authService.logout();
-      this.router.navigate(['/login']);
-    } catch (error) {
-      alert('Logout not fully implemented yet');
-    }
-  }
+
   // Apply filter based on selected priority
   applyFilter(priority: string) {
     this.loadTasks(priority);
   }
+
+  // Open Modal to create a new task
   openCreateForm() {
     this.creating = true;
   }
@@ -141,5 +135,15 @@ export class TaskListComponent implements OnInit {
         error: () => this.toast.error(`Failed to delete task ${id}`),
       });
     });
+  }
+
+  // Logout user
+  logout() {
+    try {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+    } catch (error) {
+      alert('Logout not fully implemented yet');
+    }
   }
 }
