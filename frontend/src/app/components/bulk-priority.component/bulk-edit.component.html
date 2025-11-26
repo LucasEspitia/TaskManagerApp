@@ -2,23 +2,39 @@
   <div class="modal">
     <h3>Bulk Edit</h3>
 
-    <div class="form-block">
-      <label>Priority</label>
-      <select [(ngModel)]="selectedPriority">
-        <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
-      </select>
+    <!-- PRIORITY -->
+    <div class="group">
+      <label>Select Priority:</label>
+      <div class="options">
+        <button
+          *ngFor="let p of priorities"
+          type="button"
+          [class.active]="selectedPriority === p"
+          (click)="togglePriority(p)"
+        >
+          {{ p }}
+        </button>
+      </div>
     </div>
 
-    <div class="form-block">
-      <label>Status</label>
-      <select [(ngModel)]="selectedStatus">
-        <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
-      </select>
+    <!-- STATUS -->
+    <div class="group">
+      <label>Select Status:</label>
+      <div class="options">
+        <button
+          *ngFor="let s of statuses"
+          type="button"
+          [class.active]="selectedStatus === s"
+          (click)="toggleStatus(s)"
+        >
+          {{ s }}
+        </button>
+      </div>
     </div>
 
     <div class="buttons">
       <button class="btn-save" (click)="applyChange()">Apply</button>
-      <button class="btn-cancel" (click)="close.emit()">Cancel</button>
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
     </div>
   </div>
 </div>

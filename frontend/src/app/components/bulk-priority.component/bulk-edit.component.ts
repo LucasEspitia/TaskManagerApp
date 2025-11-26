@@ -22,13 +22,36 @@ export class BulkEditComponent {
   priorities = Object.values(TaskPriority);
   statuses = Object.values(TaskStatus);
 
-  selectedPriority: TaskPriority = TaskPriority.MEDIUM;
-  selectedStatus: TaskStatus = TaskStatus.TODO;
+  selectedPriority: TaskPriority | null = null;
+  selectedStatus: TaskStatus | null = null;
+
+  togglePriority(p: TaskPriority) {
+    this.selectedPriority = this.selectedPriority === p ? null : p;
+  }
+  toggleStatus(s: TaskStatus) {
+    this.selectedStatus = this.selectedStatus === s ? null : s;
+  }
 
   applyChange() {
-    this.apply.emit({
-      priority: this.selectedPriority,
-      status: this.selectedStatus,
-    });
+    const payload: any = {};
+
+    if (this.selectedPriority !== null) {
+      payload.priority = this.selectedPriority;
+    }
+
+    if (this.selectedStatus !== null) {
+      payload.status = this.selectedStatus;
+    }
+
+    this.apply.emit(payload);
+    // Reset selections after applying changes
+    this.selectedPriority = null;
+    this.selectedStatus = null;
+  }
+  closeModal() {
+    this.selectedPriority = null;
+    this.selectedStatus = null;
+
+    this.close.emit();
   }
 }
