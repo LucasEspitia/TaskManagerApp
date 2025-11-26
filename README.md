@@ -38,7 +38,7 @@ This repository contains a working but **incomplete** application. The basic str
 ✅ Task detail/edit component  
 ✅ Priority management features  
 ✅ Input validation using DTOs  
-❌ Error handling and user feedback
+✅ Error handling and user feedback
 
 ## Getting Started
 
