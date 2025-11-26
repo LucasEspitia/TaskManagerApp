@@ -7,18 +7,18 @@
   border: 1px solid #eee;
 }
 
-.label {
+label {
   font-weight: 600;
-  margin-top: 10px;
+  font-size: 18px;
+  margin-top: 12px;
 }
 
 .input,
-.textarea,
-.select {
+.textarea {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
@@ -42,6 +42,10 @@
   cursor: pointer;
 }
 
+.btn-save:hover {
+  background: #45a049;
+}
+
 .btn-cancel {
   background: #e53935;
   color: white;
@@ -51,8 +55,65 @@
   cursor: pointer;
 }
 
+.btn-cancel:hover {
+  background: #d32f2f;
+}
+
 .error-msg {
   color: red;
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+.dropdown-group {
+  position: relative;
+}
+
+.dropdown {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: white;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  margin: 10px 0;
+}
+
+.dropdown-selected {
+  font-size: 15px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 50;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.dropdown-item:hover {
+  background: #f3f4f6;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

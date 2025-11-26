@@ -49,6 +49,28 @@ export class TaskDetailComponent implements OnInit {
       },
     });
   }
+  priorityMenuOpen = false;
+  statusMenuOpen = false;
+
+  togglePriorityMenu() {
+    this.priorityMenuOpen = !this.priorityMenuOpen;
+    this.statusMenuOpen = false;
+  }
+
+  toggleStatusMenu() {
+    this.statusMenuOpen = !this.statusMenuOpen;
+    this.priorityMenuOpen = false;
+  }
+
+  selectPriority(p: TaskPriority) {
+    this.form.get('priority')?.setValue(p);
+    this.priorityMenuOpen = false;
+  }
+
+  selectStatus(s: TaskStatus) {
+    this.form.get('status')?.setValue(s);
+    this.statusMenuOpen = false;
+  }
 
   save() {
     if (this.form.invalid) {

@@ -10,16 +10,47 @@
 
     <label>Description</label>
     <textarea formControlName="description" class="textarea"></textarea>
+    <!-- STATUS DROPDOWN -->
+    <div class="form-group dropdown-group">
+      <label>Status</label>
 
-    <label>Status</label>
-    <select formControlName="status" class="select">
-      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
-    </select>
+      <div class="dropdown" (click)="toggleStatusMenu()" tabindex="0">
+        <div class="dropdown-selected">
+          {{ form.get('status')?.value }}
+        </div>
 
-    <label>Priority</label>
-    <select formControlName="priority" class="select">
-      <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
-    </select>
+        <div class="dropdown-menu" *ngIf="statusMenuOpen">
+          <div
+            *ngFor="let s of statuses"
+            class="dropdown-item"
+            (click)="selectStatus(s); $event.stopPropagation()"
+          >
+            {{ s }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIORITY DROPDOWN -->
+    <div class="form-group dropdown-group">
+      <label>Priority</label>
+
+      <div class="dropdown" (click)="togglePriorityMenu()" tabindex="0">
+        <div class="dropdown-selected">
+          {{ form.get('priority')?.value }}
+        </div>
+
+        <div class="dropdown-menu" *ngIf="priorityMenuOpen">
+          <div
+            *ngFor="let p of priorities"
+            class="dropdown-item"
+            (click)="selectPriority(p); $event.stopPropagation()"
+          >
+            {{ p }}
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="buttons">
       <button type="submit" class="btn-save">Save</button>
