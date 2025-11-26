@@ -23,7 +23,7 @@ export class LoginComponent {
     // Build reactive form
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -35,9 +35,9 @@ export class LoginComponent {
   get password() {
     return this.loginForm.get('password');
   }
-
   onSubmit() {
     if (this.loginForm.invalid) {
+      this.errorMessage = 'Invalid email or password.';
       this.loginForm.markAllAsTouched();
       return;
     }
@@ -47,13 +47,8 @@ export class LoginComponent {
     const { email, password } = this.loginForm.value;
 
     this.authService.login({ email, password }).subscribe({
-      next: () => {
-        this.router.navigate(['/tasks']);
-      },
-      error: (error) => {
-        this.errorMessage = 'Login failed. Please check your credentials.';
-        console.error('Login error:', error);
-      },
+      next: () => this.router.navigate(['/tasks']),
+      error: () => (this.errorMessage = 'Invalid email or password.'),
     });
   }
 }
